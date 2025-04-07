@@ -1,0 +1,78 @@
+{% load tz %}
+<html>
+<head>
+    <title>Device : {{ device.id }}</title>
+</head>
+<body>
+    <div>
+        <p>Nom: {{ device.name }}</p>
+        <p>Description: {{ device.description }}</p>
+    </div>
+
+    {% if temperatures %}
+    <h3>Températures</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Horodatage</th>
+                <th>Température</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for temperature in temperatures %}
+            <tr>
+                <td>{{ temperature.createdAt|timezone:"Europe/Paris"|date:"d/m/Y H:i" }}</td>
+                <td>{{ temperature.value }}°c</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p>Aucune température enregistrée.</p>
+    {% endif %}
+
+    {% if pressures %}
+    <h3>Pressions</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Horodatage</th>
+                <th>Pression</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for pressure in pressures %}
+            <tr>
+                <td>{{ pressure.createdAt|timezone:"Europe/Paris"|date:"d/m/Y H:i" }}</td>
+                <td>{{ pressure.value }} Pa</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p>Aucune pression enregistrée.</p>
+    {% endif %}
+
+    {% if altitude %}
+    <h3>Altitude</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Horodatage</th>
+                <th>Altitude</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for alt in altitude %}
+            <tr>
+                <td>{{ alt.createdAt|timezone:"Europe/Paris"|date:"d/m/Y H:i" }}</td>
+                <td>{{ alt.value }} m</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p>Aucune altitude enregistrée.</p>
+    {% endif %}
+</body>
+</html>
