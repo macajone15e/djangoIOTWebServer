@@ -14,7 +14,7 @@
                 <tbody>
                     {% for device in devices %}
                     <tr>
-                        <td><a href="/viewdevice/{{ device.id }}">{{ device.name }}</a></td>
+                        <td><a href="/devices/{{ device.id }}">{{ device.name }} || id : {{device.id}}</a></td>
                         <td>{{ device.description }}</td>
                     </tr>{% endfor %}
                 </tbody>
