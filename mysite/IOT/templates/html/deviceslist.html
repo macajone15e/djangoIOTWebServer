@@ -1,0 +1,91 @@
+<html>
+    <head>
+        <title>BAME</title>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        {% load static %} 
+        {% load tz %}
+        <link rel="stylesheet" href="static/css/devicelist.css">
+        <script src="{% static '/js/devicelist.js' %}"></script>
+    </head>
+    <body>
+        <section class="hero-wrapper">
+            <!-- Vidéo fetchée depuis le WP de junia.com hehehe -->
+            <video autoplay muted loop class="absolute">
+                <source src="https://www.junia.com/wp-content/themes/junia/assets/src/img/videos/hero.webm" type="video/webm">
+                Votre navigateur ne supporte pas la vidéo.
+            </video>
+            <div class="hero-container flex-row-center relative on-top">
+                <div class="hero-content flex-col-space medium-gap">
+                    <h1 class="glassmorphism hero-title-container flex-row-center">Nos capteurs en écoute</h1>
+                    <!-- Ici, nous créons deux colonnes-->
+                    <!-- 1 - Liste des ESP32 -->
+                    <!-- 2 - Détail de l'ESP32 actif -->
+                    <div class="device-container flex-row-center large-gap">
+                        <!-- Affichage de la liste des devices connectés au serveur-->
+                        <div class="device-col small-col glassmorphism">
+                            {% if devices %}
+                            {% for device in devices %}
+                            <!-- Chaque device est une carte activable -->
+                            <!-- J'enregistre toute sa data -->
+                            <div class="device-card flex-column small-gap" 
+                                onclick="setActiveDevice(this)"
+                                data-name="{{ device.name }}" 
+                                data-description="{{ device.description }}"
+                                data-type="{{ device.type }}"
+                                data-status="{{ device.status }}"
+                                data-altitude="{{ last_altitude }}"
+                                data-pressure="{{ last_pressure }}"
+                                data-temperature-labels='[
+                                {% for temperature in temperatures %}
+                                    "{{ temperature.createdAt|date:'H:i'|escapejs }}" {% if not forloop.last %},{% endif %}
+                                {% endfor %}
+                                ]'
+                                data-temperature-values='[
+                                {% for temperature in temperatures %}
+                                    {{ temperature.value }}{% if not forloop.last %},{% endif %}
+                                {% endfor %}
+                                ]'
+                                > 
+                                <h3>{{ device.name }}</h3>
+                                <p>{{ device.description }}</p>
+                            </div>
+                            {% endfor %}
+                            {% else %}
+                            <p>Aucun device.</p>
+                            {% endif %} 
+                        </div>
+                        <!-- Affichage des infos du device activé -->
+                        <div class="device-col large-col glassmorphism">
+                            <h2>Détails</h2>
+                            <p><strong>Nom:</strong> <span id="device-name"></span></p>
+                            <p><strong>Description:</strong> <span id="device-description">-</span></p>
+                            <div class="flex-col-center flex-wrap large-gap">
+                                <div class="flex-row-center medium-gap">
+                                    {% if altitudes %}
+                                    <div class="flex-col-center small-gap">
+                                        <canvas id="altitudeGauge" width="200" height="200"></canvas>
+                                        <h2>Altitude</h2>
+                                    </div>
+                                    {% endif %}
+                                    
+                                    {% if pressures %}
+                                    <div class="flex-col-center small-gap">
+                                        <canvas id="pressureGauge" width="200" height="200"></canvas>
+                                        <h2>Pression</h2>
+                                    </div>
+                                    {% endif %}
+                                </div>
+                                {% if temperatures and temperatures|length > 0 %}
+                                <div class="flex-col-center small-gap">
+                                    <canvas id="temperatureChart" width="400" height="200"></canvas>
+                                    <h2>Graphique des températures</h2>
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </body>
+</html>

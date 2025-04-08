@@ -16,8 +16,21 @@ def viewdevice(request, device_id):
         "pressures": pressures,
         "altitude": altitude
     }
-    return render(request, "iot/viewdevice.html", context)
+    return render(request, "html/viewdevice.html", context)
 
 def device_list(request):
     devices = Devices.objects.order_by("-lastSeenAt")
-    return render(request, "iot/deviceslist.html", {"devices": devices})
+    pressures = Pressures.objects.all()
+    altitudes = Altitudes.objects.all()
+    temperatures = Temperatures.objects.all()
+    last_altitude = altitudes.last().value if altitudes.exists() else 0
+    last_pressure = pressures.last().value if pressures.exists() else 0
+    context = {
+        'devices': devices,
+        'temperatures': temperatures,
+        'pressures': pressures,
+        'altitudes': altitudes,
+        'last_altitude': last_altitude,
+        'last_pressure': last_pressure,
+    }
+    return render(request, "html/deviceslist.html", context)
