@@ -16,8 +16,8 @@ def viewdevice(request, device_id):
         "pressures": pressures,
         "altitude": altitude
     }
-    return render(request, "iot/viewdevice.html", context)
+    return render(request, "html/viewdevice.html", context)
 
 def device_list(request):
     devices = Devices.objects.order_by("-lastSeenAt")
-    return render(request, "iot/deviceslist.html", {"devices": devices})
+    return render(request, "html/deviceslist.html", {"devices": devices})
