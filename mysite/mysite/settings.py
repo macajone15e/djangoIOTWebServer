@@ -124,7 +124,7 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-MQTT_SERVER = '141.94.20.26'
+MQTT_SERVER = '127.0.0.1'
 MQTT_PORT = 1883
 MQTT_KEEPALIVE = 60
 MQTT_USER = 'adimaker'
